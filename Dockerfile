@@ -1,5 +1,9 @@
 FROM ubuntu
 
+
+COPY password_manager/package.json package.json
+RUN npm install 
+
 RUN apt-get update
 RUN apt-get -y install curl 
 RUN curl -sL https://deb.nodesource.com/setup_18.x  | bash -
@@ -10,8 +14,10 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-COPY password_manager/package.json package.json
-RUN npm install 
+COPY server/requirements.txt requirements.txt
+RUN apt-get update && apt-get install -y python3-venv
+RUN python3 -m venv venv
+RUN . venv/bin/activate && pip install -r requirements.txt
 
 COPY password_manager/public public
 COPY password_manager/src src
