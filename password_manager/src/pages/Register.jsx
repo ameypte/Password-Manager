@@ -77,7 +77,7 @@ export default function Register() {
         <h3 className="text-center">Register</h3>
         {message && (
           <>
-            <div class="alert alert-danger" role="alert">
+            <div className="alert alert-danger" role="alert">
               {message}
             </div>
           </>

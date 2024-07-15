@@ -14,8 +14,6 @@ export default function AddPassword() {
     // Simpele Columnar Transposition, Multiple Columnar Tranposition, Rail Fence.
     const [lastUpdated, setLastUpdated] = useState("");
 
-    const [data, setData] = useState([{}]);
-
     useEffect(() => {
         const isUserLoggedIn = isLoggedIn();
         if (!isUserLoggedIn) {
@@ -25,6 +23,14 @@ export default function AddPassword() {
         // set last updated to current date and time
         setLastUpdated(new Date().toISOString().slice(0, 10));
     }, []);
+
+    const resetForm = () => {
+        setWebsite("");
+        setUsername("");
+        setPassword("");
+        setKeyWords("");
+        setEncryptionType("");
+    }
 
     const handleAddPassword = (e) => {
         e.preventDefault();
@@ -46,7 +52,6 @@ export default function AddPassword() {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    setData(data);
                     console.log(data.cipher);
                     encryptedPassword = data.cipher;
                     database.push({
@@ -57,7 +62,16 @@ export default function AddPassword() {
                         encryptionType,
                         lastUpdated,
                     });
+                }).catch((error) => {
+                    console.error('Error:', error);
+                    alert("Something went wrong. Please try again later.");
+                    }
+                ).finally(() => {
+                    resetForm();
+                    alert("Password added successfully.");
                 });
+
+
             // encryptedPassword = simpleColumnarTransposition(password, 4);
         }else if(encryptionType === "Multiple-columnar"){
             const data = { message: password };
@@ -70,7 +84,6 @@ export default function AddPassword() {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    setData(data);
                     console.log(data.cipher);
                     encryptedPassword = data.cipher;
                     database.push({
@@ -81,7 +94,15 @@ export default function AddPassword() {
                         encryptionType,
                         lastUpdated,
                     });
+                }).catch((error) => {
+                    console.error('Error:', error);
+                    alert("Something went wrong. Please try again later.");
+                    }
+                ).finally(() => {
+                    resetForm();
+                    alert("Password added successfully.");
                 });
+
         }else if (encryptionType === "Rail-fence") {
             const data = { message: password };
             fetch("http://localhost:5000//railfence", {
@@ -93,7 +114,6 @@ export default function AddPassword() {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    setData(data);
                     console.log(data.cipher);
                     encryptedPassword = data.cipher;
                     database.push({
@@ -104,10 +124,15 @@ export default function AddPassword() {
                         encryptionType,
                         lastUpdated,
                     });
+                }).catch((error) => {
+                    console.error('Error:', error);
+                    alert("Something went wrong. Please try again later.");
+                  }
+                ).finally(() => {
+                    resetForm();
+                    alert("Password added successfully.");
                 });
         }
-
-        alert("Password Added");
     };
 
     return (
