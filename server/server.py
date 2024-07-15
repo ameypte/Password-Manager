@@ -7,6 +7,11 @@ CORS(app)
 key = "HACK"
 
 
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({"message": "Your Flask server is running!"})
+
+
 @app.route('/simplecolumnar', methods=['POST'])
 def simpleColumnar():
     data = request.get_json()
@@ -222,4 +227,5 @@ def decryptRailFence():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True)
+    # setting host to "0.0.0.0" eans that the server will be accessible from any device in the network

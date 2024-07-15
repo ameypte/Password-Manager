@@ -19,5 +19,3 @@ COPY password_manager/package-lock.json package-lock.json
 COPY server/server.py server.py
 
 CMD ["npm", "start"]
-
-
